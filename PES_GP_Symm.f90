@@ -93,7 +93,7 @@ subroutine load_GP_Data
   allocate (alpha(nTraining), lScale(nDim), xTraining(nDim,nTraining),xTrainingPerm(nDim,nTraining), xStar(nDim))
 
   !====Load hyperparameters====
-  write (filename,  '( "../HyperParams_Symm", I2.2, ".dat" )' )  nTraining
+  write (filename,  '( "TrainingData/HyperParams_Symm", I2.2, ".dat" )' )  nTraining
   open (unit = 7, file = filename)
   !Only need to read some as others are tied.
   read (7,*) lScale(1),expVar,NuggVar,dum
@@ -103,7 +103,7 @@ subroutine load_GP_Data
   close(7)
   
   !====Load alpha coefficients====
-  write (filename, '( "../alpha_Symm", I2.2, ".dat" )' )  nTraining
+  write (filename, '( "TrainingData/alpha_Symm", I2.2, ".dat" )' )  nTraining
   open (unit = 7, file = filename)
   do i=1,nTraining
      read (7,*) alpha(i)
@@ -113,7 +113,7 @@ subroutine load_GP_Data
 
 
   !====Load training data x values ====
-  write (filename, '( "../xTraining", I2.2, ".dat" )'  )  nTraining
+  write (filename, '( "TrainingData/xTraining", I2.2, ".dat" )'  )  nTraining
   open (unit = 7, file = filename)
     
   do i=1,nTraining
@@ -122,7 +122,7 @@ subroutine load_GP_Data
   end do
   close(7)
   
-  ! Permute the training vectors
+  ! Permute the training vectors (not needed for 2Ar as only one vector)
   !xTrainingPerm = xTraining
   !do i=1,nTraining
   !   xTrainingPerm(3,i)=xTraining(5,i)
