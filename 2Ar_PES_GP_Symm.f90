@@ -76,9 +76,12 @@ subroutine load_GP_2Ar_Data
   integer i,j
   double precision :: dum
   character (len=90) :: filename
-
+  CHARACTER(len=255) :: path
+  
   allocate (alpha(nTraining), lScale(nDim), xTraining(nDim,nTraining),xTrainingPerm(nDim,nTraining), xStar(nDim))
-  CALL chdir("~/source/2Ar_PES")
+  call chdir("../2Ar_PES")
+  call getcwd(path)
+  
   !====Load hyperparameters====
   write (filename,  '( "TrainingData/HyperParams_Symm", I2.2, ".dat" )' )  nTraining
   open (unit = 7, file = filename)
