@@ -20,45 +20,15 @@ module GP_2Ar_variables
   integer :: nTraining=72 
 end module GP_2Ar_variables
 
-
-subroutine fixedAngleSlice
-  use PES_2Ar_details
-  !use GP_2Ar_variables
-  implicit none
-  double precision rab(1)
-  integer i, itot
-  double precision  r, tha, thb, ph, e, e_GP, asymp, PES_2Ar,AngToBohr
-  AngToBohr= 1.8897259885789
-    
-  itot=700
-
-  open (unit=15, file="PES_2Ar_Out.dat ", status='replace')
-  
-  do i=0, itot
-
-     ! specify centre-to-centre separation in Bohr
-     r = (  2.4 + 15.0*i/(1.0*itot) ) * AngToBohr
-     rab(1)=r
-     
-     
-     e=PES_2Ar( rab)
-     write(15,*) r/AngToBohr , e 
-     
-  enddo
-  write(6,*)'Written to file: PES_2Ar_Out.dat '
-  close(15)
-
-end subroutine fixedAngleSlice
   
   
-  
-double precision function asymp(rab)
+double precision function asymp_2Ar(rab)
 ! Work out the asymptotic energy for Ar-Ar
 ! Everything is in Atomic Units (Bohr, Hartree)
 implicit none
 double precision rab(1)
 
-asymp= - 64.3 / rab(1)**6 - 1642 / rab(1)**8
+asymp_2Ar= - 64.3 / rab(1)**6 - 1642 / rab(1)**8
 !- 64.3 / r^6 - 1642 / r^8
 end
 !
@@ -150,14 +120,14 @@ function PES_2Ar( rab)
   !! Takes in rab in Angstrom
   use PES_2Ar_details
   implicit none
-  double precision rab(1), xStar(1),  asymp
+  double precision rab(1), xStar(1),  asymp_2Ar
   double precision AngToBohr, PES_2Ar
 
   AngToBohr= 1.8897259885789
 
   
   if( rab(1) > gpRMax) then !!Use asymptotic function
-     PES_2Ar = asymp(rab)
+     PES_2Ar = asymp_2Ar(rab)
      
   else if (rab(1) < gpRMin  ) then !! Use repulsive approximation function
      PES_2Ar=gpEmax* ( (gpRMin)/rab(1))**12 
