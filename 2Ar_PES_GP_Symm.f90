@@ -1,6 +1,6 @@
 module PES_2Ar_details
-  double precision :: gpRMax = 9.0   *   1.8897259885789
-  double precision :: gpRMin = 2.5   *   1.8897259885789
+  double precision :: gpRMax = 9.0  !! *   1.8897259885789
+  double precision :: gpRMin = 2.5  !! *   1.8897259885789
   double precision :: gpEmax = 0.027031002
   !! Maximum energy in Hartree seen within the geometric constraint
   interface PES_2Ar_GP 
@@ -46,11 +46,14 @@ subroutine load_GP_2Ar_Data
   integer i,j
   double precision :: dum
   character (len=90) :: filename
-  CHARACTER(len=255) :: path
+  CHARACTER(len=255) :: homedir,codedir
   
   allocate (alpha(nTraining), lScale(nDim), xTraining(nDim,nTraining),xTrainingPerm(nDim,nTraining), xStar(nDim))
-  call chdir("../2Ar_PES")
-  call getcwd(path)
+  CALL getenv("HOME", homedir)
+  codedir=TRIM(homedir) // '/source/2Ar_PES'
+  call chdir(codedir)
+
+
   
   !====Load hyperparameters====
   write (filename,  '( "TrainingData/HyperParams_Symm", I2.2, ".dat" )' )  nTraining
@@ -126,14 +129,16 @@ function PES_2Ar( rab)
   AngToBohr= 1.8897259885789
 
   
+  
   if( rab(1) > gpRMax) then !!Use asymptotic function
+     rab=rab*AngToBohr
      PES_2Ar = asymp_2Ar(rab)
      
   else if (rab(1) < gpRMin  ) then !! Use repulsive approximation function
      PES_2Ar=gpEmax* ( (gpRMin)/rab(1))**12 
      
   else !! Use the Guassian Process function
-     xStar(:) = AngToBohr/rab(:)
+     xStar(:) =1.0/rab(:)
      PES_2Ar = PES_2Ar_GP( xStar)
   end if
 
