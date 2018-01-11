@@ -51,12 +51,13 @@ subroutine load_GP_2Ar_Data
   allocate (alpha(nTraining), lScale(nDim), xTraining(nDim,nTraining),xTrainingPerm(nDim,nTraining), xStar(nDim))
   CALL getenv("HOME", homedir)
   codedir=TRIM(homedir) // '/source/2Ar_PES'
-  call chdir(codedir)
+  !call chdir(codedir)
 
 
   
   !====Load hyperparameters====
-  write (filename,  '( "TrainingData/HyperParams_Symm", I2.2, ".dat" )' )  nTraining
+  write (filename,  '( "/TrainingData/HyperParams_Symm", I2.2, ".dat" )' )  nTraining
+  filename = trim(codedir) // filename
   open (unit = 7, file = filename)
   !Only need to read some as others are tied.
   read (7,*) lScale(1),expVar,NuggVar,dum
@@ -66,7 +67,8 @@ subroutine load_GP_2Ar_Data
   close(7)
   
   !====Load alpha coefficients====
-  write (filename, '( "TrainingData/alpha_Symm", I2.2, ".dat" )' )  nTraining
+  write (filename, '( "/TrainingData/alpha_Symm", I2.2, ".dat" )' )  nTraining
+  filename = trim(codedir) // filename
   open (unit = 7, file = filename)
   do i=1,nTraining
      read (7,*) alpha(i)
@@ -76,7 +78,8 @@ subroutine load_GP_2Ar_Data
 
 
   !====Load training data x values ====
-  write (filename, '( "TrainingData/xTraining", I2.2, ".dat" )'  )  nTraining
+  write (filename, '( "/TrainingData/xTraining", I2.2, ".dat" )'  )  nTraining
+  filename = trim(codedir) // filename
   open (unit = 7, file = filename)
     
   do i=1,nTraining
