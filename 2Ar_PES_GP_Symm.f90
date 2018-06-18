@@ -1,3 +1,7 @@
+!!! Computes Ar-Ar binary interaction via a trained Gaussian Process
+!!! All lengths in Angstrom and energies in Hartree
+
+
 module PES_2Ar_details
   double precision :: gpRMax = 9.0  !! *   1.8897259885789
   double precision :: gpRMin = 2.5  !! *   1.8897259885789

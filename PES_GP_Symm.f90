@@ -28,12 +28,12 @@ subroutine fixedAngleSlice
   do i=0, itot
 
      ! specify centre-to-centre separation in Bohr
-     r = (  2.4 + 15.0*i/(1.0*itot) ) * AngToBohr
+     r = (  2.5 + 15.0*i/(1.0*itot) ) 
      rab(1)=r
      
      
      e=PES_2Ar( rab)
-     write(15,*) r/AngToBohr , e 
+     write(15,*) r , e 
      
   enddo
   write(6,*)'Written to file: PES_2Ar_Out.dat '
